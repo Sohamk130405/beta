@@ -64,8 +64,18 @@ def upgrade() -> None:
         sa.Column("id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("code", sa.String(length=64), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("code"),
     )
@@ -80,8 +90,18 @@ def upgrade() -> None:
         sa.Column("profile_image_url", sa.Text(), nullable=True),
         sa.Column("role", user_role, nullable=False),
         sa.Column("is_active", sa.Boolean(), server_default="true", nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("email"),
         sa.UniqueConstraint("google_id"),
@@ -97,12 +117,23 @@ def upgrade() -> None:
         sa.Column("start_date", sa.Date(), nullable=False),
         sa.Column("end_date", sa.Date(), nullable=False),
         sa.Column("is_active", sa.Boolean(), server_default="false", nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["institution_id"], ["institutions.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["institution_id"], ["institutions.id"], ondelete="RESTRICT"
+        ),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("institution_id", "name", name="uq_academic_years_institution_name"),
+        sa.UniqueConstraint(
+            "institution_id", "name", name="uq_academic_years_institution_name"
+        ),
     )
-    op.create_index("ix_academic_years_institution_id", "academic_years", ["institution_id"])
+    op.create_index(
+        "ix_academic_years_institution_id", "academic_years", ["institution_id"]
+    )
 
     op.create_table(
         "branches",
@@ -110,10 +141,19 @@ def upgrade() -> None:
         sa.Column("institution_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("code", sa.String(length=64), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["institution_id"], ["institutions.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["institution_id"], ["institutions.id"], ondelete="RESTRICT"
+        ),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("institution_id", "code", name="uq_branches_institution_code"),
+        sa.UniqueConstraint(
+            "institution_id", "code", name="uq_branches_institution_code"
+        ),
     )
     op.create_index("ix_branches_institution_id", "branches", ["institution_id"])
 
@@ -123,8 +163,18 @@ def upgrade() -> None:
         sa.Column("user_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("employee_id", sa.String(length=64), nullable=False),
         sa.Column("department", sa.String(length=255), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("employee_id", name="uq_faculty_employee_id"),
@@ -139,11 +189,25 @@ def upgrade() -> None:
         sa.Column("institution_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("code", sa.String(length=64), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["institution_id"], ["institutions.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["institution_id"], ["institutions.id"], ondelete="RESTRICT"
+        ),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("institution_id", "code", name="uq_subjects_institution_code"),
+        sa.UniqueConstraint(
+            "institution_id", "code", name="uq_subjects_institution_code"
+        ),
     )
     op.create_index("ix_subjects_institution_id", "subjects", ["institution_id"])
 
@@ -154,10 +218,19 @@ def upgrade() -> None:
         sa.Column("branch_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("academic_year_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("name", sa.String(length=64), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["academic_year_id"], ["academic_years.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["academic_year_id"], ["academic_years.id"], ondelete="RESTRICT"
+        ),
         sa.ForeignKeyConstraint(["branch_id"], ["branches.id"], ondelete="RESTRICT"),
-        sa.ForeignKeyConstraint(["institution_id"], ["institutions.id"], ondelete="RESTRICT"),
+        sa.ForeignKeyConstraint(
+            ["institution_id"], ["institutions.id"], ondelete="RESTRICT"
+        ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
             "branch_id",
@@ -179,9 +252,21 @@ def upgrade() -> None:
         sa.Column("branch_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("division_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("academic_year_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["academic_year_id"], ["academic_years.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["academic_year_id"], ["academic_years.id"], ondelete="RESTRICT"
+        ),
         sa.ForeignKeyConstraint(["branch_id"], ["branches.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["division_id"], ["divisions.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["user_id"], ["users.id"], ondelete="RESTRICT"),
@@ -204,12 +289,26 @@ def upgrade() -> None:
         sa.Column("division_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("academic_year_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["academic_year_id"], ["academic_years.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["academic_year_id"], ["academic_years.id"], ondelete="RESTRICT"
+        ),
         sa.ForeignKeyConstraint(["division_id"], ["divisions.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["faculty_id"], ["faculty.id"], ondelete="RESTRICT"),
-        sa.ForeignKeyConstraint(["institution_id"], ["institutions.id"], ondelete="RESTRICT"),
+        sa.ForeignKeyConstraint(
+            ["institution_id"], ["institutions.id"], ondelete="RESTRICT"
+        ),
         sa.ForeignKeyConstraint(["subject_id"], ["subjects.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -224,7 +323,12 @@ def upgrade() -> None:
         sa.Column("id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("class_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("student_id", postgresql.UUID(as_uuid=True), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.ForeignKeyConstraint(["class_id"], ["classes.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["student_id"], ["students.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
@@ -235,7 +339,9 @@ def upgrade() -> None:
         ),
     )
     op.create_index("ix_class_enrollments_class_id", "class_enrollments", ["class_id"])
-    op.create_index("ix_class_enrollments_student_id", "class_enrollments", ["student_id"])
+    op.create_index(
+        "ix_class_enrollments_student_id", "class_enrollments", ["student_id"]
+    )
 
     op.create_table(
         "face_profiles",
@@ -244,8 +350,18 @@ def upgrade() -> None:
         sa.Column("embedding", Vector(), nullable=False),
         sa.Column("model_name", sa.String(length=255), nullable=False),
         sa.Column("model_version", sa.String(length=64), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.ForeignKeyConstraint(["student_id"], ["students.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("student_id", name="uq_face_profiles_student_id"),
@@ -263,21 +379,39 @@ def upgrade() -> None:
         sa.Column("starts_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("ends_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("status", session_status, nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
         sa.ForeignKeyConstraint(["class_id"], ["classes.id"], ondelete="RESTRICT"),
         sa.ForeignKeyConstraint(["faculty_id"], ["faculty.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_attendance_sessions_class_id", "attendance_sessions", ["class_id"])
+    op.create_index(
+        "ix_attendance_sessions_class_id", "attendance_sessions", ["class_id"]
+    )
     op.create_index(
         "ix_attendance_sessions_class_status",
         "attendance_sessions",
         ["class_id", "status"],
     )
-    op.create_index("ix_attendance_sessions_ends_at", "attendance_sessions", ["ends_at"])
-    op.create_index("ix_attendance_sessions_faculty_id", "attendance_sessions", ["faculty_id"])
-    op.create_index("ix_attendance_sessions_starts_at", "attendance_sessions", ["starts_at"])
+    op.create_index(
+        "ix_attendance_sessions_ends_at", "attendance_sessions", ["ends_at"]
+    )
+    op.create_index(
+        "ix_attendance_sessions_faculty_id", "attendance_sessions", ["faculty_id"]
+    )
+    op.create_index(
+        "ix_attendance_sessions_starts_at", "attendance_sessions", ["starts_at"]
+    )
     op.create_index("ix_attendance_sessions_status", "attendance_sessions", ["status"])
     op.create_index(
         "ix_attendance_sessions_time_status",
@@ -298,16 +432,27 @@ def upgrade() -> None:
         sa.Column("face_verified", sa.Boolean(), nullable=False),
         sa.Column("face_score", sa.Numeric(8, 6), nullable=True),
         sa.Column("status", attendance_status, nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["session_id"], ["attendance_sessions.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["session_id"], ["attendance_sessions.id"], ondelete="RESTRICT"
+        ),
         sa.ForeignKeyConstraint(["student_id"], ["students.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("session_id", "student_id", name="uq_attendance_session_student"),
+        sa.UniqueConstraint(
+            "session_id", "student_id", name="uq_attendance_session_student"
+        ),
     )
     op.create_index("ix_attendance_marked_at", "attendance", ["marked_at"])
     op.create_index("ix_attendance_session_id", "attendance", ["session_id"])
     op.create_index("ix_attendance_student_id", "attendance", ["student_id"])
-    op.create_index("ix_attendance_student_marked_at", "attendance", ["student_id", "marked_at"])
+    op.create_index(
+        "ix_attendance_student_marked_at", "attendance", ["student_id", "marked_at"]
+    )
 
     op.create_table(
         "verification_attempts",
@@ -324,24 +469,50 @@ def upgrade() -> None:
         sa.Column("face_score", sa.Numeric(8, 6), nullable=True),
         sa.Column("expires_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("completed_at", sa.DateTime(timezone=True), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
-        sa.ForeignKeyConstraint(["session_id"], ["attendance_sessions.id"], ondelete="RESTRICT"),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["session_id"], ["attendance_sessions.id"], ondelete="RESTRICT"
+        ),
         sa.ForeignKeyConstraint(["student_id"], ["students.id"], ondelete="RESTRICT"),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_verification_attempts_expires_at", "verification_attempts", ["expires_at"])
-    op.create_index("ix_verification_attempts_session_id", "verification_attempts", ["session_id"])
-    op.create_index("ix_verification_attempts_status", "verification_attempts", ["status"])
-    op.create_index("ix_verification_attempts_student_id", "verification_attempts", ["student_id"])
+    op.create_index(
+        "ix_verification_attempts_expires_at", "verification_attempts", ["expires_at"]
+    )
+    op.create_index(
+        "ix_verification_attempts_session_id", "verification_attempts", ["session_id"]
+    )
+    op.create_index(
+        "ix_verification_attempts_status", "verification_attempts", ["status"]
+    )
+    op.create_index(
+        "ix_verification_attempts_student_id", "verification_attempts", ["student_id"]
+    )
 
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_index("ix_verification_attempts_student_id", table_name="verification_attempts")
+    op.drop_index(
+        "ix_verification_attempts_student_id", table_name="verification_attempts"
+    )
     op.drop_index("ix_verification_attempts_status", table_name="verification_attempts")
-    op.drop_index("ix_verification_attempts_session_id", table_name="verification_attempts")
-    op.drop_index("ix_verification_attempts_expires_at", table_name="verification_attempts")
+    op.drop_index(
+        "ix_verification_attempts_session_id", table_name="verification_attempts"
+    )
+    op.drop_index(
+        "ix_verification_attempts_expires_at", table_name="verification_attempts"
+    )
     op.drop_table("verification_attempts")
 
     op.drop_index("ix_attendance_student_marked_at", table_name="attendance")
@@ -350,12 +521,16 @@ def downgrade() -> None:
     op.drop_index("ix_attendance_marked_at", table_name="attendance")
     op.drop_table("attendance")
 
-    op.drop_index("ix_attendance_sessions_time_status", table_name="attendance_sessions")
+    op.drop_index(
+        "ix_attendance_sessions_time_status", table_name="attendance_sessions"
+    )
     op.drop_index("ix_attendance_sessions_status", table_name="attendance_sessions")
     op.drop_index("ix_attendance_sessions_starts_at", table_name="attendance_sessions")
     op.drop_index("ix_attendance_sessions_faculty_id", table_name="attendance_sessions")
     op.drop_index("ix_attendance_sessions_ends_at", table_name="attendance_sessions")
-    op.drop_index("ix_attendance_sessions_class_status", table_name="attendance_sessions")
+    op.drop_index(
+        "ix_attendance_sessions_class_status", table_name="attendance_sessions"
+    )
     op.drop_index("ix_attendance_sessions_class_id", table_name="attendance_sessions")
     op.drop_table("attendance_sessions")
 

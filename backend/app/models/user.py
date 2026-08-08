@@ -18,6 +18,7 @@ from app.models.types import (
 if TYPE_CHECKING:
     from app.models.faculty import Faculty
     from app.models.student import Student
+    from app.models.session import Session
 
 
 class User(Base):
@@ -47,3 +48,4 @@ class User(Base):
 
     student: Mapped[Student | None] = relationship(back_populates="user")
     faculty: Mapped[Faculty | None] = relationship(back_populates="user")
+    sessions: Mapped[list["Session"]] = relationship(back_populates="user")
