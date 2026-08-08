@@ -1,0 +1,22 @@
+services:
+  db:
+    image: ankane/pgvector:latest
+    container_name: geoattend-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: geoattend
+      POSTGRES_USER: geoattend
+      POSTGRES_PASSWORD: geoattend
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/db-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U geoattend -d geoattend"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
