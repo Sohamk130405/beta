@@ -30,3 +30,8 @@ async def database_health(
         return HealthResponse(status="unavailable")
 
     return HealthResponse(status="ok")
+
+
+@router.get("/", response_model=HealthResponse)
+async def root() -> HealthResponse:
+    return HealthResponse(status="ok")
